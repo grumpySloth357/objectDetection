@@ -20,4 +20,7 @@ RT object detection
 
 
  
-Jiali Ge, Yuchen Wang
+Contributors:
+Jiali Ge
+Nidhi tiwari
+Yuchen Wang
