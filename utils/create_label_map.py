@@ -16,8 +16,8 @@ def load_labelmap(path):
         obj_id = np.int32(words[1])
       elif words[0]=='display_name':
         obj_name = words[1]
-        #label_map[obj_id] = {'id':obj_id, 'name':str(obj_name)}
-        label_map[obj_id] = obj_name.strip('\"')
+        label_map[obj_id] = {'id':obj_id, 'name':obj_name.strip('\"')}
+        #label_map[obj_id] = obj_name.strip('\"')
       else:
         continue
   return label_map        

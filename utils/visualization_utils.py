@@ -371,7 +371,6 @@ def visualize_boxes_and_labels_on_image_array(image,
   if not max_boxes_to_draw:
     max_boxes_to_draw = boxes.shape[0]
   for i in range(min(max_boxes_to_draw, boxes.shape[0])):
-    print (classes[i])
     if scores is None or scores[i] > min_score_thresh:
       box = tuple(boxes[i].tolist())
       if instance_masks is not None:
@@ -383,8 +382,8 @@ def visualize_boxes_and_labels_on_image_array(image,
       else:
         if not agnostic_mode:
           if classes[i] in category_index.keys():
-            #class_name = category_index[classes[i]]['name']
-            class_name = category_index[classes[i]]
+            class_name = category_index[classes[i]]['name']
+            #class_name = category_index[classes[i]]
           else:
             class_name = 'N/A'
           display_str = '{}: {}%'.format(
