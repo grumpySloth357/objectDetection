@@ -20,5 +20,4 @@ RT object detection
 
 
  
-Jiali Ge
-Yuchen Wang
+Jiali Ge, Yuchen Wang
