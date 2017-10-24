@@ -20,7 +20,7 @@ RT object detection
 
 
  
-Contributors:
+Contributors for this :
 Jiali Ge
 Nidhi tiwari
 Yuchen Wang
