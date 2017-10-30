@@ -4,6 +4,9 @@ Here, we are building a real-time object detection application on Android: **Spe
 
 Speak EyE is an android application geared towards visually impaired individuals that can describe their surrounds and also provide some alerts.
 
+## [**Trello**](https://trello.com/b/G7R60axl/group-workflow)
+
+
 # Navigation Folders
 
 **SpeakEye**:     Our android application
@@ -25,6 +28,3 @@ Nidhi Tiwari    :[@nidhi-bu](https://github.com/nidhi-bu)
 Shreeya Khadka  :[@angrySloth357](https://github.com/angrySloth357)
 
 Yuchen Wang     :[@lowycve](https://github.com/lowycve)
-
-
-## [**Trello**](https://trello.com/b/G7R60axl/group-workflow)
