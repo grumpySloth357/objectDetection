@@ -1,28 +1,20 @@
 # objectDetection
-RT object detection
+Object Detection tests on various Google pretained models
 
-### Output from fast model: MOBILENET
+### Output from SSD_MOBILENET
 
 ![slow](./fast_1.png "FastModel")
 
+### Output from SSD_INCEPTION
 
-### Output from slow model: INCEPTION_RESNET
+### Output from INCEPTION_RESNET_
 
 ![fast](./slow_1.png "SlowModel")
 
 
 ### Per Image Stats
 
-| Stats\Model    | FastModel | SlowModel  |
-|----------------|-----------|------------|
-| Detection time | ~5s       | ~40s       |
-| Model Size     | ~30MB     | ~250MB     |
-
-
- 
-Contributors:
-Jiali Ge,
-Nidhi tiwari,
-Yuchen Wang,
-Shreeya Khadka
-123
+| Stats\Model    | MOBILENET | INCEPTIONNET  | RCNN_INCEPTION_RESNET |
+|----------------|-----------|---------------|-----------------------|
+| Detection time | ~180ms    | ~250ms        | 24s		     |
+| Model Size     | ~30MB     | ~100MB        | 250MB		     |
