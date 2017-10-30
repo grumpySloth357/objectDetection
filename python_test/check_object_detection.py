@@ -27,7 +27,7 @@ LABELS_PATH = './data/mscoco_label_map.pbtxt'
 NUM_CLASSES = 90
 ############################ TEST IMAGES ###########################
 PATH_TO_TEST_IMAGES_DIR = './testImages'
-TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, 'image{}.jpg'.format(i)) for i in range(1, 9)]
+TEST_IMAGE_PATHS = [ os.path.join(PATH_TO_TEST_IMAGES_DIR, 'image{}.jpg'.format(i)) for i in range(6, 7)]
 # Size, in inches, of the output images.
 IMAGE_SIZE = (8, 4)
 
