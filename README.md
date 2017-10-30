@@ -1,28 +1,15 @@
 # objectDetection
-RT object detection
 
-### Output from fast model: MOBILENET
+Here, we are building a real-time object detection application on Android: **Speak EyE**.
 
-![slow](./fast_1.png "FastModel")
+Speak EyE is an android application geared towards visually impaired individuals that can describe their surrounds and also provide some alerts.
 
+# Navigation Folders
 
-### Output from slow model: INCEPTION_RESNET
+SpeakEye: Our android application
 
-![fast](./slow_1.png "SlowModel")
+python_test: Folder for python based object detection tests
 
+cpp_test: Folder for C++ based object detection tests
 
-### Per Image Stats
-
-| Stats\Model    | FastModel | SlowModel  |
-|----------------|-----------|------------|
-| Detection time | ~5s       | ~40s       |
-| Model Size     | ~30MB     | ~250MB     |
-
-
- 
-Contributors:
-Jiali Ge,
-Nidhi tiwari,
-Yuchen Wang,
-Shreeya Khadka
-123
+models: Where you should save your .pb models :)
