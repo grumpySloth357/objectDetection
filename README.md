@@ -15,3 +15,13 @@ cpp_test: Folder for C++ based object detection tests
 models: Where you should save your .pb models :)
 
 The models can be downloaded from: [Tensorflow](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md)
+
+# Contributors
+
+Jiali Ge :@ivyoo00
+
+Nidhi Tiwari :@nidhi-bu
+
+Shreeya Khadka :@angrySloth357
+
+Yuchen Wang :@lowycve
