@@ -26,4 +26,5 @@ Shreeya Khadka  :[@angrySloth357](https://github.com/angrySloth357)
 
 Yuchen Wang     :[@lowycve](https://github.com/lowycve)
 
-[##Trello](https://trello.com/b/G7R60axl/group-workflow)
+
+[**Trello**](https://trello.com/b/G7R60axl/group-workflow)
