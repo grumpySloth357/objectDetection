@@ -10,4 +10,6 @@ public class DetectObjectsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detect_objects);
     }
+
+
 }
