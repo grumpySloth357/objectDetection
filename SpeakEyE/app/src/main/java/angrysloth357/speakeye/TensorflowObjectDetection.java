@@ -7,6 +7,7 @@ package angrysloth357.speakeye;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.RectF;
 import android.os.Trace;
 import android.util.Log;
 import java.io.BufferedReader;
@@ -20,6 +21,7 @@ import java.util.Vector;
 import org.tensorflow.Graph;
 import org.tensorflow.Operation;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
+
 
 /* Class to detect objects using Tensorflow */
 public class TensorflowObjectDetection {
@@ -111,7 +113,75 @@ public class TensorflowObjectDetection {
         this.outputNumDetections = new float[1];
     }
 
+    public List<RecognizedObjects> recognizeImage(final Bitmap bitmap) {
+        // Log this method so that it can be analyzed with systrace.
+        Trace.beginSection("recognizeImage");
 
+        Trace.beginSection("preprocessBitmap");
+        // Preprocess the image data from 0-255 int to normalized float based
+        // on the provided parameters.
+        bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        for (int i = 0; i < intValues.length; ++i) {
+            byteValues[i * 3 + 2] = (byte) (intValues[i] & 0xFF);
+            byteValues[i * 3 + 1] = (byte) ((intValues[i] >> 8) & 0xFF);
+            byteValues[i * 3 + 0] = (byte) ((intValues[i] >> 16) & 0xFF);
+        }
+        Trace.endSection(); // preprocessBitmap
+
+        // Copy the input data into TensorFlow.
+        Trace.beginSection("feed");
+        inferenceInterface.feed(INPUT_NAME, byteValues, 1, INPUT_SIZE, INPUT_SIZE, 3);
+        Trace.endSection();
+
+        // Run the inference call.
+        Trace.beginSection("run");
+        inferenceInterface.run(OUTPUT_NAMES, logStats);
+        Trace.endSection();
+
+        // Copy the output Tensor back into the output array.
+        Trace.beginSection("fetch");
+        outputLocations = new float[MAX_RESULTS * 4];
+        outputScores = new float[MAX_RESULTS];
+        outputClasses = new float[MAX_RESULTS];
+        outputNumDetections = new float[1];
+        inferenceInterface.fetch(OUTPUT_NAMES[0], outputLocations);
+        inferenceInterface.fetch(OUTPUT_NAMES[1], outputScores);
+        inferenceInterface.fetch(OUTPUT_NAMES[2], outputClasses);
+        inferenceInterface.fetch(OUTPUT_NAMES[3], outputNumDetections);
+        Trace.endSection();
+
+        // Find the best detections.
+        final PriorityQueue<RecognizedObjects> pq =
+                new PriorityQueue<RecognizedObjects>(
+                        1,
+                        new Comparator<RecognizedObjects>() {
+                            @Override
+                            public int compare(final RecognizedObjects lhs, final RecognizedObjects rhs) {
+                                // Intentionally reversed to put high confidence at the head of the queue.
+                                return Float.compare(rhs.getConfidence(), lhs.getConfidence());
+                            }
+                        });
+
+        // Scale them back to the input size.
+        for (int i = 0; i < outputScores.length; ++i) {
+            final RectF detection =
+                    new RectF(
+                            outputLocations[4 * i + 1] * INPUT_SIZE,
+                            outputLocations[4 * i] * INPUT_SIZE,
+                            outputLocations[4 * i + 3] * INPUT_SIZE,
+                            outputLocations[4 * i + 2] * INPUT_SIZE);
+            pq.add(
+                    new RecognizedObjects("" + i, labels.get((int) outputClasses[i]), outputScores[i], detection));
+        }
+
+        final ArrayList<RecognizedObjects> recognitions = new ArrayList<RecognizedObjects>();
+        for (int i = 0; i < Math.min(pq.size(), MAX_RESULTS); ++i) {
+            recognitions.add(pq.poll());
+        }
+        Trace.endSection(); // "recognizeImage"
+        return recognitions;
+    }
 
     public void enableStatLogging(boolean logStats) {
         this.logStats = logStats;
