@@ -39,7 +39,7 @@ public class TensorflowObjectDetection {
     private static final String INPUT_NAME = "image_tensor";
     private static final String[] OUTPUT_NAMES = {"detection_boxes", "detection_scores", "detection_classes", "num_detections"};
     private static final String MODEL_FILE = "file:///android_asset/ssd_inception_v2_coco.pb";
-    private static final String LABEL_FILE = "file:///android_asset/mscoco_label_map.pbtxt";
+    private static final String LABEL_FILE = "file:///android_asset/mscoco_labels.txt";
 
     // Options
     private boolean logStats = false;

@@ -4,13 +4,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.Bundle;
 import android.provider.MediaStore;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
+import java.util.List;
+import java.util.Iterator;
+
 
 public class DetectObjectsActivity extends AppCompatActivity {
 
@@ -39,7 +39,16 @@ public class DetectObjectsActivity extends AppCompatActivity {
         ImageView mImageView = (ImageView) findViewById(R.id.image);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            Bitmap imageBitmap = (Bitmap) extras.get("data"); //get bitmap
+            /*Call the detector :)*/
+            TensorflowObjectDetection objMod = new TensorflowObjectDetection(getBaseContext());
+            List<RecognizedObjects> objDetected = objMod.recognizeImage(imageBitmap);
+            //iterate through and print everything detected
+            for (Iterator<RecognizedObjects> i = objDetected.iterator(); i.hasNext();) {
+                RecognizedObjects item = i.next();
+                System.out.println(item.toString());
+            }
+            //Display image on frame
             mImageView.setImageBitmap(imageBitmap);
         }
     }
