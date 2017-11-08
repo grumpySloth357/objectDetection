@@ -20,11 +20,12 @@ public class DetectObjectsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detect_objects);
 
         /* Add camera buttons */
-        ImageButton imgBtn = (ImageButton) findViewById(R.id.detectBtn);
-        ImageView mImageView = (ImageView) findViewById(R.id.dispImage);
+        //ImageButton imgBtn = (ImageButton) findViewById(R.id.detectBtn);
+        //ImageView mImageView = (ImageView) findViewById(R.id.dispImage);
     }
 
-    /* Shreeya: Add intent to use the Camera */
+    /******************** IMAGE STUFF **************************************/
+    /* Add intent to use the Camera */
     static final int REQUEST_IMAGE_CAPTURE = 1;
     public void dispatchTakePictureIntent(View view) { //View was needed to use the camera :o
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -32,16 +33,15 @@ public class DetectObjectsActivity extends AppCompatActivity {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
-
     /*Get image and display it as imageview*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        ImageView mImageView = (ImageView) findViewById(R.id.dispImage);
+        ImageView mImageView = (ImageView) findViewById(R.id.image);
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             mImageView.setImageBitmap(imageBitmap);
         }
     }
-
+    /*************************************************************************/
 }
