@@ -34,6 +34,15 @@ public class MainActivity extends AppCompatActivity {
         // Do something in response to button
         //1. Make an intent to communicate with new activity, needs => this:current context; DisplayMessageActivity.class: class of app to deliver intent to
         Intent intent = new Intent(this, DetectObjectsActivity.class);
+        //Intent intent = new Intent(this, CameraActivity.class);
+        //Start the ObjDetector :)
+        startActivity(intent);
+    }
+
+    public void startCameraActivity(View view) {
+        // Do something in response to button
+        //1. Make an intent to communicate with new activity, needs => this:current context; DisplayMessageActivity.class: class of app to deliver intent to
+        Intent intent = new Intent(this, CameraActivity.class);
         //Start the ObjDetector :)
         startActivity(intent);
     }

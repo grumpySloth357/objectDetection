@@ -6,13 +6,16 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.provider.MediaStore;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.view.View;
 import java.util.List;
 import java.util.Iterator;
 
 
+
 public class DetectObjectsActivity extends AppCompatActivity {
+
+    TensorflowObjectDetection objMod;
+    Bitmap recognizedImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,9 @@ public class DetectObjectsActivity extends AppCompatActivity {
         /* Add camera buttons */
         //ImageButton imgBtn = (ImageButton) findViewById(R.id.detectBtn);
         //ImageView mImageView = (ImageView) findViewById(R.id.dispImage);
+
+        /*Tensorflow model*/
+        objMod = new TensorflowObjectDetection(getBaseContext());
     }
 
     /******************** IMAGE STUFF **************************************/
@@ -41,7 +47,9 @@ public class DetectObjectsActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data"); //get bitmap
             /*Call the detector :)*/
-            TensorflowObjectDetection objMod = new TensorflowObjectDetection(getBaseContext());
+            //TensorflowObjectDetection objMod = new TensorflowObjectDetection(getBaseContext());
+            //recognizedImg =  Bitmap.createBitmap(imageBitmap);
+            System.out.println(imageBitmap.getHeight()+"_"+imageBitmap.getWidth());
             List<RecognizedObjects> objDetected = objMod.recognizeImage(imageBitmap);
             //iterate through and print everything detected
             for (Iterator<RecognizedObjects> i = objDetected.iterator(); i.hasNext();) {
@@ -49,7 +57,7 @@ public class DetectObjectsActivity extends AppCompatActivity {
                 System.out.println(item.toString());
             }
             //Display image on frame
-            mImageView.setImageBitmap(imageBitmap);
+            mImageView.setImageBitmap(recognizedImg);
         }
     }
     /*************************************************************************/

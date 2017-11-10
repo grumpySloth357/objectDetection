@@ -28,7 +28,7 @@ public class TensorflowObjectDetection {
     private static final String TAG = "TensorFlowOBJDetect";
 
     // Only return this many results with at least this confidence.
-    private static final int MAX_RESULTS = 100;
+    private static final int MAX_RESULTS = 50;
     private static final float THRESHOLD = 0.1f;
 
 
@@ -164,7 +164,12 @@ public class TensorflowObjectDetection {
                         });
 
         // Scale them back to the input size.
+        System.out.println("OutputLoc len: "+outputLocations.length);
+        System.out.println("OutputScores len: "+outputScores.length);
+        System.out.println("OutputClasses len: "+outputClasses.length);
+        System.out.println("OutputNumDet len: "+outputNumDetections.length);
         for (int i = 0; i < outputScores.length; ++i) {
+            System.out.println("Recognized: "+labels.get((int) outputClasses[i])+": "+outputScores[i]);
             final RectF detection =
                     new RectF(
                             outputLocations[4 * i + 1] * INPUT_SIZE,
