@@ -53,13 +53,6 @@ public class TensorflowObjectDetection implements Classifier {
 
     private TensorFlowInferenceInterface inferenceInterface;
 
-    /**
-     * Initializes a native TensorFlow session for classifying images.
-     *
-     * @param assetManager The asset manager to be used to load assets.
-     * @param modelFilename The filepath of the model GraphDef protocol buffer.
-     * @param labelFilename The filepath of label file for classes.
-     */
     public static Classifier create(
             final AssetManager assetManager,
             final String modelFilename,
@@ -183,15 +176,18 @@ public class TensorflowObjectDetection implements Classifier {
             //System.out.println(i+": Detected: "+labels.get((int) outputClasses[i])+"\t Confidence: "+outputScores[i]);
             System.out.println(i+": Detected: "+labels_map.get((int) outputClasses[i])+"\t Confidence: "+outputScores[i]);
 
-            final RectF detection = new RectF(0,0,0,0);
-                    /*new RectF(
+            if (outputScores[i]>=0.5f) { /*Only add things if they are over 0.5 threshold*/
+                final RectF detection =
+                                        //new RectF(0, 0, 0, 0);
+                                        new RectF(
                             outputLocations[4 * i + 1] * inputSize,
                             outputLocations[4 * i] * inputSize,
                             outputLocations[4 * i + 3] * inputSize,
-                            outputLocations[4 * i + 2] * inputSize);*/
-            pq.add(
-                    //new Recognition("" + i, labels.get((int) outputClasses[i]), outputScores[i], detection));
-                    new Recognition("" + i, labels_map.get((int) outputClasses[i]), outputScores[i], detection));
+                            outputLocations[4 * i + 2] * inputSize);
+                pq.add(
+                        //new Recognition("" + i, labels.get((int) outputClasses[i]), outputScores[i], detection));
+                        new Recognition("" + i, labels_map.get((int) outputClasses[i]), outputScores[i], detection));
+            }
         }
         System.out.println("Got out of recognition loop!!");
         final ArrayList<Recognition> recognitions = new ArrayList<Recognition>();
