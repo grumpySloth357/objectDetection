@@ -49,7 +49,7 @@ public class DetectObjectsActivity extends AppCompatActivity {
             /*Call the detector :)*/
             //TensorflowObjectDetection objMod = new TensorflowObjectDetection(getBaseContext());
             //recognizedImg =  Bitmap.createBitmap(imageBitmap);
-            System.out.println(imageBitmap.getHeight()+"_"+imageBitmap.getWidth());
+            //System.out.println(imageBitmap.getHeight()+"_"+imageBitmap.getWidth());
             List<RecognizedObjects> objDetected = objMod.recognizeImage(imageBitmap);
             //iterate through and print everything detected
             for (Iterator<RecognizedObjects> i = objDetected.iterator(); i.hasNext();) {
