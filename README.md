@@ -21,6 +21,17 @@ Speak EyE is an android application geared towards visually impaired individuals
 
 The models can be downloaded from: [Tensorflow](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md)
 
+# How to Run the App
+
+1. Download our repository in Githup.
+
+2. In Android Studio, click open and choose the corresponding app in the location where you download it.(like SpeakEyE or Android)
+
+3. Run it in Android Studio.(You may need to get everything updated)
+
+4. Choose the emulator and then you can see what we have done.
+
+
 # Contributors
 
 Jiali Ge        :[@ivyoo00](https://github.com/ivyoo00)
