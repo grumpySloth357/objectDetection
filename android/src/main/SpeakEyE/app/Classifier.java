@@ -17,12 +17,14 @@ package main.SpeakEyE.app;
 
 import android.graphics.Bitmap;
 import android.graphics.RectF;
+import android.view.View;
+
 import java.util.List;
 
 /**
  * Generic interface for interacting with different recognition engines.
  */
-public interface Classifier {
+public interface Classifier  {
   /**
    * An immutable result returned by a Classifier describing what was recognized.
    */

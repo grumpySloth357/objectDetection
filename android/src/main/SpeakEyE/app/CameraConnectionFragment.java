@@ -16,6 +16,7 @@
 
 package main.SpeakEyE.app;
 
+import android.app.Service;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,6 +24,7 @@ import android.app.DialogFragment;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
@@ -42,6 +44,7 @@ import android.media.ImageReader.OnImageAvailableListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Size;
 import android.util.SparseIntArray;
@@ -50,6 +53,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,8 +64,13 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import main.SpeakEyE.app.env.Logger;
 import main.SpeakEyE.app.R;
+import android.os.Bundle;
+
+
 
 public class CameraConnectionFragment extends Fragment {
+
+  private Button buttonSpeak;
   private static final Logger LOGGER = new Logger();
 
   /**
@@ -83,10 +92,15 @@ public class CameraConnectionFragment extends Fragment {
     ORIENTATIONS.append(Surface.ROTATION_270, 180);
   }
 
+
+
   /**
    * {@link android.view.TextureView.SurfaceTextureListener} handles several lifecycle events on a
    * {@link TextureView}.
    */
+
+
+
   private final TextureView.SurfaceTextureListener surfaceTextureListener =
       new TextureView.SurfaceTextureListener() {
         @Override
@@ -109,6 +123,8 @@ public class CameraConnectionFragment extends Fragment {
         @Override
         public void onSurfaceTextureUpdated(final SurfaceTexture texture) {}
       };
+
+
 
   /**
    * Callback for Activities to use to initialize their data once the
@@ -227,6 +243,7 @@ public class CameraConnectionFragment extends Fragment {
 
   private final ConnectionCallback cameraConnectionCallback;
 
+
   private CameraConnectionFragment(
       final ConnectionCallback connectionCallback,
       final OnImageAvailableListener imageListener,
@@ -236,6 +253,8 @@ public class CameraConnectionFragment extends Fragment {
     this.imageListener = imageListener;
     this.layout = layout;
     this.inputSize = inputSize;
+
+
   }
 
   /**
@@ -317,18 +336,23 @@ public class CameraConnectionFragment extends Fragment {
   @Override
   public View onCreateView(
       final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+
     return inflater.inflate(layout, container, false);
   }
 
   @Override
   public void onViewCreated(final View view, final Bundle savedInstanceState) {
     textureView = (AutoFitTextureView) view.findViewById(R.id.texture);
+
   }
 
   @Override
   public void onActivityCreated(final Bundle savedInstanceState) {
     super.onActivityCreated(savedInstanceState);
+
   }
+
+
 
   @Override
   public void onResume() {
@@ -638,6 +662,7 @@ public class CameraConnectionFragment extends Fragment {
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
       final Activity activity = getActivity();
+
       return new AlertDialog.Builder(activity)
           .setMessage(getArguments().getString(ARG_MESSAGE))
           .setPositiveButton(

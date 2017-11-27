@@ -38,6 +38,11 @@ import main.SpeakEyE.app.env.BorderedText;
 import main.SpeakEyE.app.env.ImageUtils;
 import main.SpeakEyE.app.env.Logger;
 import main.SpeakEyE.app.R;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 public class ClassifierActivity extends CameraActivity implements OnImageAvailableListener {
   private static final Logger LOGGER = new Logger();
@@ -106,6 +111,9 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
   private BorderedText borderedText;
 
   private long lastProcessingTimeMs;
+
+
+
 
   @Override
   protected int getLayoutId() {
@@ -284,4 +292,6 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
       borderedText.drawLines(canvas, 10, canvas.getHeight() - 10, lines);
     }
   }
+
+
 }

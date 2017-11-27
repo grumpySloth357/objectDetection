@@ -19,6 +19,7 @@ package main.SpeakEyE.app;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.media.Image.Plane;
 import android.media.ImageReader.OnImageAvailableListener;
@@ -28,13 +29,15 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.util.Size;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 import java.nio.ByteBuffer;
 import main.SpeakEyE.app.env.Logger;
 import main.SpeakEyE.app.R;
 
-public abstract class CameraActivity extends Activity implements OnImageAvailableListener {
+public abstract class CameraActivity extends Activity implements OnImageAvailableListener, View.OnClickListener {
   private static final Logger LOGGER = new Logger();
 
   private static final int PERMISSIONS_REQUEST = 1;
@@ -46,6 +49,7 @@ public abstract class CameraActivity extends Activity implements OnImageAvailabl
 
   private Handler handler;
   private HandlerThread handlerThread;
+  private Button buttonSpeak;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -60,6 +64,26 @@ public abstract class CameraActivity extends Activity implements OnImageAvailabl
     } else {
       requestPermission();
     }
+
+    /*Stuff for button*/
+    buttonSpeak = (Button) findViewById(R.id.btn);
+    buttonSpeak.setOnClickListener(this);
+
+  }
+
+  @Override
+  public void onClick(View view) {
+    System.out.println("ON THE CLICK");
+    if(view == buttonSpeak){
+      System.out.println("Clicked...");
+      Intent i = new Intent(this, AudioDescription.class);
+      String str = Output.getAudio();
+      //i.putExtra("word", "do you have some water");
+      i.putExtra("word", str);
+      startService(i);
+    }
+
+
   }
 
   @Override

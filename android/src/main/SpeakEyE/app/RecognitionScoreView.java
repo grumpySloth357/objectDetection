@@ -24,6 +24,7 @@ import android.view.View;
 
 import main.SpeakEyE.app.Classifier.Recognition;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class RecognitionScoreView extends View implements ResultsView {
@@ -49,6 +50,12 @@ public class RecognitionScoreView extends View implements ResultsView {
   @Override
   public void setResults(final List<Recognition> results) {
     this.results = results;
+    String str = "";
+    for (Iterator<Recognition> i = results.iterator(); i.hasNext();) {
+      Classifier.Recognition item = i.next();
+      str += item.getTitle() + " ";
+    }
+    Output.SetAudio(str);
     postInvalidate();
   }
 
