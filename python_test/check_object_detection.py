@@ -23,7 +23,7 @@ MODEL_MEDIUM = '../models/faster_rcnn_resnet101_coco.pb'
 MODEL_MOST_ACCURATE = '../models/faster_rcnn_inception_resnet_v2_atrous_coco.pb'
 
 ############################ LABELS ###########################
-LABELS_PATH = './data/mscoco_label_map.pbtxt'
+LABELS_PATH = './data/mscoco_label_map.pbtxt.txt'
 NUM_CLASSES = 90
 ############################ TEST IMAGES ###########################
 PATH_TO_TEST_IMAGES_DIR = './testImages'
@@ -84,6 +84,9 @@ def start_testing_images(model_path):
                 # Expand dimensions since the model expects images to have shape: [1, None, None, 3]
                 start = timeit.default_timer()
                 image_np_expanded = np.expand_dims(image_np, axis=0)
+                print ('image_np.shape: ', image_np.shape)
+                print ('image_np_expanded.shape: ', image_np_expanded.shape)
+                print (image_np)
                 stop = timeit.default_timer()
                 print ("Time to expand dims: ", stop-start)
                 
