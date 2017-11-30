@@ -37,7 +37,7 @@ import main.SpeakEyE.app.R;
 public class DetectionActivity extends CameraActivity implements ImageReader.OnImageAvailableListener {
     private static final Logger LOGGER = new Logger();
 
-    private static final int INPUT_SIZE = 224;
+    private static final int INPUT_SIZE = 350; //224
     private static final int IMAGE_MEAN = 128;
     private static final float IMAGE_STD = 128.0f;
     private static final String INPUT_NAME = "image_tensor";
@@ -50,7 +50,7 @@ public class DetectionActivity extends CameraActivity implements ImageReader.OnI
 
     private static final float MINIMUM_CONFIDENCE_MULTIBOX = 0.1f;
 
-    private static final int TF_OD_API_INPUT_SIZE = 300;
+    private static final int TF_OD_API_INPUT_SIZE = 350; //224
 
     private static final Size DESIRED_PREVIEW_SIZE = new Size(640, 480);
 
