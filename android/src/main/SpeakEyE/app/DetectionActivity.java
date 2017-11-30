@@ -50,7 +50,7 @@ public class DetectionActivity extends CameraActivity implements ImageReader.OnI
 
     private static final float MINIMUM_CONFIDENCE_MULTIBOX = 0.1f;
 
-    private static final int TF_OD_API_INPUT_SIZE = 350; //224
+    private static final int TF_OD_API_INPUT_SIZE = 350; //300
 
     private static final Size DESIRED_PREVIEW_SIZE = new Size(640, 480);
 
