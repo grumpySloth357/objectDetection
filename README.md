@@ -1,30 +1,9 @@
-# objectDetection
+# Branch Description
 
-Here, we are building a real-time object detection application on Android: **Speak EyE**.
+Here, we have implemented "Text To Speech" function to our app. When we detect something, the text shows on screen and after clicking the button, the detection results will be spoken out.
 
-Speak EyE is an android application geared towards visually impaired individuals that can describe their surrounds and also provide some alerts.
+We have merged this branch to the Master. So just clone the repository in Master branch. 
 
-## [**Trello**](https://trello.com/b/G7R60axl/group-workflow)
-
-
-# Navigation Folders
-
-**SpeakEye**:     Our android application
-
-**python_test**:  Folder for python based object detection tests
-
-**cpp_test**:     Folder for C++ based object detection tests
-
-**models**:       Where you should save your .pb models :)
-
-The models can be downloaded from: [Tensorflow](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md)
-
-# Contributors
-
-Jiali Ge        :[@ivyoo00](https://github.com/ivyoo00)
+# Branch Contributors
 
 Nidhi Tiwari    :[@nidhi-bu](https://github.com/nidhi-bu)
-
-Shreeya Khadka  :[@angrySloth357](https://github.com/angrySloth357)
-
-Yuchen Wang     :[@lowycve](https://github.com/lowycve)
