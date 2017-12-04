@@ -1,28 +1,5 @@
-# objectDetection
-RT object detection
+# Branch Description
+In this branch, we tried "Speech To Text" function. And now we are trying to implement it as "Voice Trigger" function in our main app. So for the main case just focus on Master branch.
 
-### Output from fast model: MOBILENET
-
-![slow](./fast_1.png "FastModel")
-
-
-### Output from slow model: INCEPTION_RESNET
-
-![fast](./slow_1.png "SlowModel")
-
-
-### Per Image Stats
-
-| Stats\Model    | FastModel | SlowModel  |
-|----------------|-----------|------------|
-| Detection time | ~5s       | ~40s       |
-| Model Size     | ~30MB     | ~250MB     |
-
-
- 
-Contributors:
-Jiali Ge,
-Nidhi tiwari,
-Yuchen Wang,
-Shreeya Khadka
-123
+# Branch Contributor
+Yuchen Wang :@lowycve
