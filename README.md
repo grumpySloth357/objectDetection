@@ -31,6 +31,8 @@ The models can be downloaded from: [Tensorflow](https://github.com/tensorflow/mo
 
 4. Choose the emulator and then you can see what we have done.
 
+(To run the app "Android", you need to add 3 models in "ObjectDetection-- Android-- assets". But the models are too large to upload to Git. We can send them to you.)
+
 
 # Contributors
 
