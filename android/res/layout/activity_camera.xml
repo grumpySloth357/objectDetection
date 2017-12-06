@@ -29,5 +29,4 @@
         android:background="@android:color/transparent"
         android:text="Button"
         android:visibility="visible" />
-
 </FrameLayout>
