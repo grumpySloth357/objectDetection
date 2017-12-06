@@ -37,20 +37,22 @@ import main.SpeakEyE.app.R;
 public class DetectionActivity extends CameraActivity implements ImageReader.OnImageAvailableListener {
     private static final Logger LOGGER = new Logger();
 
-    private static final int INPUT_SIZE = 224;
+    private static final int INPUT_SIZE = 300; //224
     private static final int IMAGE_MEAN = 128;
     private static final float IMAGE_STD = 128.0f;
     private static final String INPUT_NAME = "image_tensor";
     private static final String[] OUTPUT_NAMES = {"detection_boxes", "detection_scores", "detection_classes", "num_detections"};
 
-    private static final String MODEL_FILE = "file:///android_asset/ssd_inception_v2_coco.pb";
-    private static final String LABEL_FILE = "file:///android_asset/mscoco_labels.txt";
+    //private static final String MODEL_FILE = "file:///android_asset/ssd_inception_v2_coco.pb"; // takes 6s/image
+    private static final String MODEL_FILE = "file:///android_asset/ssd_mobilenet_v1_coco.pb"; //~1-2s/image
 
+    private static final String LABEL_FILE = "file:///android_asset/mscoco_labels.txt";
+    //private static final String FLAG_FILE = "file:///android_asset/flags.txt";
 
 
     private static final float MINIMUM_CONFIDENCE_MULTIBOX = 0.1f;
 
-    private static final int TF_OD_API_INPUT_SIZE = 300;
+    private static final int TF_OD_API_INPUT_SIZE = 300; //300
 
     private static final Size DESIRED_PREVIEW_SIZE = new Size(640, 480);
 
@@ -221,11 +223,11 @@ public class DetectionActivity extends CameraActivity implements ImageReader.OnI
                         final List<Classifier.Recognition> results = detector.recognizeImage(croppedBitmap);
                         lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
 
-                        System.out.println("Displaying output..");
-                        for (Iterator<Classifier.Recognition> i = results.iterator(); i.hasNext();) {
-                            Classifier.Recognition item = i.next();
-                            System.out.println(item.toString());
-                        }
+                        System.out.println("Detection time: "+lastProcessingTimeMs);
+//                        for (Iterator<Classifier.Recognition> i = results.iterator(); i.hasNext();) {
+//                            Classifier.Recognition item = i.next();
+//                            System.out.println(item.toString());
+//                        }
 
                         cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);
                         resultsView.setResults(results);

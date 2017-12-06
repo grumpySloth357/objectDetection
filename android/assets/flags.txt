@@ -1,0 +1,17 @@
+1: bicycle
+2: car
+3: motorcycle
+4: bus
+5: train
+6: truck
+7: traffic light
+8: stop sign
+9: elephant
+10: bear
+11: knife
+12: dining table
+13: toaster
+14: sink
+15: refrigerator
+16: scissors
+17: hair drier

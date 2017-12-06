@@ -18,12 +18,14 @@ package main.SpeakEyE.app;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 
 import main.SpeakEyE.app.Classifier.Recognition;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,6 +35,8 @@ public class RecognitionScoreView extends View implements ResultsView {
   private final float textSizePx;
   private final Paint fgPaint;
   private final Paint bgPaint;
+  private static final String FLAG_FILE = "file:///android_asset/flags.txt";
+
 
   public RecognitionScoreView(final Context context, final AttributeSet set) {
     super(context, set);
@@ -44,18 +48,18 @@ public class RecognitionScoreView extends View implements ResultsView {
     fgPaint.setTextSize(textSizePx);
 
     bgPaint = new Paint();
-    bgPaint.setColor(0xcc4285f4);
+    bgPaint.setColor(0xccd8bfd8);
   }
 
   @Override
   public void setResults(final List<Recognition> results) {
     this.results = results;
-    String str = "";
+    /*String str = "";
     for (Iterator<Recognition> i = results.iterator(); i.hasNext();) {
       Classifier.Recognition item = i.next();
       str += item.getTitle() + " ";
     }
-    Output.SetAudio(str);
+    Output.SetAudio(str);*/
     postInvalidate();
   }
 
@@ -67,10 +71,15 @@ public class RecognitionScoreView extends View implements ResultsView {
     canvas.drawPaint(bgPaint);
 
     if (results != null) {
+      HashSet <String> obj_map = new HashSet<String>(20);
       for (final Recognition recog : results) {
-        canvas.drawText(recog.getTitle() + ": " + recog.getConfidence(), x, y, fgPaint);
+        String title = recog.getTitle();
+        canvas.drawText(title + ": " + recog.getConfidence(), x, y, fgPaint);
+        obj_map.add(title);
         y += fgPaint.getTextSize() * 1.5f;
       }
+      String speak_txt = TextUtils.join(" ", obj_map);
+      Output.SetAudio(speak_txt);
     }
   }
 }

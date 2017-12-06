@@ -49,6 +49,8 @@ public class TensorFlowImageClassifier implements Classifier {
   private Vector<String> labels = new Vector<String>();
   private int[] intValues;
   private float[] floatValues;
+  //debug//
+  private byte[] byteValues1;
   private float[] outputs;
   private String[] outputNames;
 
@@ -135,8 +137,24 @@ public class TensorFlowImageClassifier implements Classifier {
     for (int i = 0; i < intValues.length; ++i) {
       final int val = intValues[i];
       floatValues[i * 3 + 0] = (((val >> 16) & 0xFF) - imageMean) / imageStd;
+      //debug
+      //byteValues1[i * 3 + 0] = (byte) ((intValues[i] >> 16) & 0xFF);
+      //System.out.println("0bytevalues"+byteValues1[i * 3 + 0]);
+
+
+      System.out.println("0floatvalues"+floatValues[i * 3 + 0]);
       floatValues[i * 3 + 1] = (((val >> 8) & 0xFF) - imageMean) / imageStd;
+      //byteValues1[i * 3 + 1] = (byte) ((intValues[i] >> 8) & 0xFF);
+      //System.out.println("1bytevalues"+byteValues1[i * 3 + 1]);
+
+
+      System.out.println("1floatvalues"+floatValues[i * 3 + 1]);
       floatValues[i * 3 + 2] = ((val & 0xFF) - imageMean) / imageStd;
+      //byteValues1[i * 3 + 2] = (byte) (intValues[i] & 0xFF);
+      //System.out.println("2bytevalues"+byteValues1[i * 3 + 2]);
+
+
+      System.out.println("2floatvalues"+floatValues[i * 3 + 2]);
     }
     Trace.endSection();
 

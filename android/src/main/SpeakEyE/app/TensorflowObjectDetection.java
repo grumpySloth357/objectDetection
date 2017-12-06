@@ -7,6 +7,7 @@ package main.SpeakEyE.app;
 import android.content.SyncStats;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Trace;
 import android.util.Log;
 import java.io.BufferedReader;
@@ -14,19 +15,24 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Vector;
 import org.tensorflow.Operation;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 import org.tensorflow.Graph;
+
+import main.SpeakEyE.app.env.ImageUtils;
 import main.SpeakEyE.app.env.Logger;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
+import android.widget.ImageView;
+
 import java.io.InputStream;
 import java.util.HashMap;
-
+import android.text.TextUtils;
 
 public class TensorflowObjectDetection implements Classifier {
     private static final Logger LOGGER = new Logger();
@@ -129,11 +135,42 @@ public class TensorflowObjectDetection implements Classifier {
         bitmap.getPixels(intValues, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
 
         for (int i = 0; i < intValues.length; ++i) {
-            byteValues[i * 3 + 2] = (byte) (intValues[i] & 0xFF);
-            byteValues[i * 3 + 1] = (byte) ((intValues[i] >> 8) & 0xFF);
-            byteValues[i * 3 + 0] = (byte) ((intValues[i] >> 16) & 0xFF);
+            byteValues[i * 3 + 2] = (byte) (intValues[i] & 0xFF); //Green
+            //System.out.println("2"+byteValues[i * 3 + 2]);
+            byteValues[i * 3 + 1] = (byte) ((intValues[i] >> 8) & 0xFF); //Blue
+            //System.out.println("1"+byteValues[i * 3 + 1]);
+            byteValues[i * 3 + 0] = (byte) ((intValues[i] >> 16) & 0xFF); //Red
+            //System.out.println(" 0"+byteValues[i * 3 + 0]);
         }
         Trace.endSection(); // preprocessBitmap
+        /*Test: make image from byteArray*/
+//        int height = (int) bitmap.getHeight();
+//        int width = (int) bitmap.getWidth();
+//        Bitmap test_image = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+//        int column = 0;
+//        int row = 0;
+//        int count = 0;
+//        while(row < height)
+//        {
+//            column = 0;
+//            while(column < width)
+//            {
+//
+//                int red_pos = 3*(row*width + column);
+//                int blue_pos = red_pos+1;
+//                int green_pos = blue_pos+1;
+//                test_image.setPixel(column, row, Color.rgb(byteValues[red_pos], byteValues[green_pos], byteValues[blue_pos]));
+//                if (byteValues[red_pos]==0 && byteValues[blue_pos]==0 && byteValues[green_pos]==0) {
+//                    count ++;
+//                }
+//                column++;
+//            }
+//            row++;
+//        }
+//        System.out.println("#0 pixels: " + count);
+//        //ImageView testIm = (ImageView) findViewById(R.id.testImage);
+//        ImageUtils.saveBitmap(test_image);
+        /*********************************/
 
         // Copy the input data into TensorFlow.
         Trace.beginSection("feed");
@@ -170,13 +207,15 @@ public class TensorflowObjectDetection implements Classifier {
                         });
 
         // Scale them back to the input size.
-        System.out.println("OutputScores.length: "+outputScores.length);
+        //System.out.println("OutputScores.length: "+outputScores.length);
+        //HashSet<String> hash_Set = new HashSet<String>(20);
         for (int i = 0; i < outputScores.length; ++i) {
-            System.out.println(i+": OutputClass: "+outputClasses[i]);
+            //System.out.println(i+": OutputClass: "+outputClasses[i]);
             //System.out.println(i+": Detected: "+labels.get((int) outputClasses[i])+"\t Confidence: "+outputScores[i]);
-            System.out.println(i+": Detected: "+labels_map.get((int) outputClasses[i])+"\t Confidence: "+outputScores[i]);
+            //System.out.println(i+": Detected: "+labels_map.get((int) outputClasses[i])+"\t Confidence: "+outputScores[i]);
 
-            if (outputScores[i]>=0.1f) { /*Only add things if they are over 0.5 threshold*/
+            if (outputScores[i]>=0.5f) { /*Only add things if they are over 0.5 threshold*/
+                //hash_Set.add(labels_map.get((int) outputClasses[i]));
                 final RectF detection =
                                         //new RectF(0, 0, 0, 0);
                                         new RectF(
@@ -189,7 +228,11 @@ public class TensorflowObjectDetection implements Classifier {
                         new Recognition("" + i, labels_map.get((int) outputClasses[i]), outputScores[i], detection));
             }
         }
-        System.out.println("Got out of recognition loop!!");
+        //Hashset into string...
+        //String storageStr = TextUtils.join(" ", hash_Set);
+        //Output.SetAudio(storageStr);
+
+        //System.out.println("Got out of recognition loop!!");
         final ArrayList<Recognition> recognitions = new ArrayList<Recognition>();
         for (int i = 0; i < Math.min(pq.size(), MAX_RESULTS); ++i) {
             recognitions.add(pq.poll());
