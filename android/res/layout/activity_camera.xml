@@ -25,9 +25,10 @@
     <Button
         android:id="@+id/btn"
         android:layout_width="match_parent"
-        android:layout_height="550dp"
+        android:layout_height="match_parent"
         android:background="@android:color/transparent"
-        android:text="Button"
         android:visibility="visible" />
+        <!--android:text="Button"-->
+
 
 </FrameLayout>

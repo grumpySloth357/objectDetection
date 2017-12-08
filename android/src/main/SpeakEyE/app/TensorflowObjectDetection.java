@@ -214,7 +214,7 @@ public class TensorflowObjectDetection implements Classifier {
             //System.out.println(i+": Detected: "+labels.get((int) outputClasses[i])+"\t Confidence: "+outputScores[i]);
             //System.out.println(i+": Detected: "+labels_map.get((int) outputClasses[i])+"\t Confidence: "+outputScores[i]);
 
-            if (outputScores[i]>=0.5f) { /*Only add things if they are over 0.5 threshold*/
+            if (outputScores[i]>=0.3f) { /*Only add things if they are over 0.3 threshold*/
                 //hash_Set.add(labels_map.get((int) outputClasses[i]));
                 final RectF detection =
                                         //new RectF(0, 0, 0, 0);
