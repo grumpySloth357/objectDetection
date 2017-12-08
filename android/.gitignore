@@ -10,3 +10,4 @@
 .externalNativeBuild
 /gradleBuild
 /gradle
+*.hprof
