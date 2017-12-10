@@ -4,12 +4,10 @@ package main.SpeakEyE.app;
  * Created by skhadka on 11/10/17.
  */
 
-import android.content.SyncStats;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Trace;
-import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -23,16 +21,13 @@ import org.tensorflow.Operation;
 import org.tensorflow.contrib.android.TensorFlowInferenceInterface;
 import org.tensorflow.Graph;
 
-import main.SpeakEyE.app.env.ImageUtils;
 import main.SpeakEyE.app.env.Logger;
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
+
 import android.graphics.RectF;
-import android.widget.ImageView;
+import android.text.TextUtils;
 
 import java.io.InputStream;
 import java.util.HashMap;
-import android.text.TextUtils;
 
 public class TensorflowObjectDetection implements Classifier {
     private static final Logger LOGGER = new Logger();
@@ -47,6 +42,9 @@ public class TensorflowObjectDetection implements Classifier {
     // Pre-allocated buffers.
     private Vector<String> labels = new Vector<String>();
     private HashMap<Integer, String> labels_map = new HashMap<Integer, String>(100);
+    private HashMap<String, Boolean> flag_map = new HashMap<String, Boolean>(100);
+    private HashMap<String, Integer> flag_counter = new HashMap<String, Integer>(100);
+    private static final int COUNT_THRESHOLD = 5;
     private int[] intValues;
     private byte[] byteValues;
     private float[] outputLocations;
@@ -72,11 +70,22 @@ public class TensorflowObjectDetection implements Classifier {
         BufferedReader br = null;
         br = new BufferedReader(new InputStreamReader(labelsInput));
         String line;
+        Integer id;
+        Integer flag;
         while ((line = br.readLine()) != null) {
             LOGGER.w(line);
             d.labels.add(line);
             String[] arr = line.split(":"); //Input format number: Label
-            d.labels_map.put(Integer.parseInt(arr[0]), arr[1]);
+            id = Integer.parseInt(arr[0]);
+            d.labels_map.put(id, arr[1]);
+            flag = Integer.parseInt(arr[2]);
+            if (flag==1)
+                d.flag_map.put(arr[1], true);
+            else if (flag==0)
+                d.flag_map.put(arr[1], false);
+            else
+                throw new RuntimeException("Unrecognized flag");
+            d.flag_counter.put(arr[1], 0);
         }
         br.close();
 
@@ -209,27 +218,34 @@ public class TensorflowObjectDetection implements Classifier {
         // Scale them back to the input size.
         //System.out.println("OutputScores.length: "+outputScores.length);
         //HashSet<String> hash_Set = new HashSet<String>(20);
+        String title;
         for (int i = 0; i < outputScores.length; ++i) {
             //System.out.println(i+": OutputClass: "+outputClasses[i]);
             //System.out.println(i+": Detected: "+labels.get((int) outputClasses[i])+"\t Confidence: "+outputScores[i]);
             //System.out.println(i+": Detected: "+labels_map.get((int) outputClasses[i])+"\t Confidence: "+outputScores[i]);
-
+            //System.out.println("Detected <FLAG> "+ flag_map.get((int) outputClasses[i]));
             if (outputScores[i]>=0.3f) { /*Only add things if they are over 0.3 threshold*/
                 //hash_Set.add(labels_map.get((int) outputClasses[i]));
+                title = labels_map.get((int) outputClasses[i]);
+                /*Update flag counter*/
+
+
+                /*Update location and area*/
                 final RectF detection =
-                                        //new RectF(0, 0, 0, 0);
                                         new RectF(
                             outputLocations[4 * i + 1] * inputSize,
                             outputLocations[4 * i] * inputSize,
                             outputLocations[4 * i + 3] * inputSize,
                             outputLocations[4 * i + 2] * inputSize);
+                final float area = (detection.width()*detection.height())/(inputSize*inputSize);
                 pq.add(
                         //new Recognition("" + i, labels.get((int) outputClasses[i]), outputScores[i], detection));
-                        new Recognition("" + i, labels_map.get((int) outputClasses[i]), outputScores[i], detection));
+                        new Recognition("" + i, title, outputScores[i], detection, area));
             }
         }
         //Hashset into string...
         //String storageStr = TextUtils.join(" ", hash_Set);
+        //System.out.println(storageStr);
         //Output.SetAudio(storageStr);
 
         //System.out.println("Got out of recognition loop!!");
@@ -239,6 +255,45 @@ public class TensorflowObjectDetection implements Classifier {
         }
         Trace.endSection(); // "recognizeImage"
         return recognitions;
+    }
+
+    /*Return flag for an object id*/
+    @Override
+    public Boolean getFlag(String title) {
+        return flag_map.get(title);
+    }
+
+    /*Get Flag count*/
+    @Override
+    public Integer getFlagCount(String title) {return flag_counter.get(title);}
+
+    /*Set Flag Count*/
+    @Override
+    public void updateFlagCount(String title) {
+        int count = this.flag_counter.get(title);
+        if (count> 5) { //reset counter
+            this.flag_counter.put(title, 0);
+        } else { //increase counter
+            this.flag_counter.put(title, count+1);
+        }
+    }
+
+    /*Flush Flag i.e.
+    if something that was detected in the previous cycle i.e. count>0 is not detected now then change count to zero
+    * */
+    @Override
+    public void flushFlag(final HashMap <String, Integer> objs) {
+        /*Reset all flag count to 0*/
+        for (String key: flag_counter.keySet()) {
+            flag_counter.put(key, 0);
+        }
+
+        /*Update actual Flag counts*/
+        for (HashMap.Entry<String, Integer> entry: objs.entrySet()) {
+            //System.out.println("<OBJS> "+entry.getKey()+":"+entry.getValue());
+            flag_counter.put(entry.getKey(), entry.getValue());
+        }
+
     }
 
     @Override

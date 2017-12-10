@@ -19,6 +19,7 @@ import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.view.View;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,6 +34,7 @@ public interface Classifier  {
      * A unique identifier for what has been recognized. Specific to the class, not the instance of
      * the object.
      */
+    public static final int FLAG_THRESHOLD = 5;
     private final String id;
 
     /**
@@ -48,12 +50,18 @@ public interface Classifier  {
     /** Optional location within the source image for the location of the recognized object. */
     private RectF location;
 
+    /*Area occupied by an object 0-1*/
+    private float area;
+
+    /*Flag*/
+
     public Recognition(
-        final String id, final String title, final Float confidence, final RectF location) {
+        final String id, final String title, final Float confidence, final RectF location, final float area) {
       this.id = id;
       this.title = title;
       this.confidence = confidence;
       this.location = location;
+      this.area = area;
     }
 
     public String getId() {
@@ -75,6 +83,8 @@ public interface Classifier  {
     public void setLocation(RectF location) {
       this.location = location;
     }
+
+    public float getArea() {return area;};
 
     @Override
     public String toString() {
@@ -104,6 +114,12 @@ public interface Classifier  {
   void enableStatLogging(final boolean debug);
   
   String getStatString();
+
+  /*Flag Stuff*/
+  Boolean getFlag(String title);
+  Integer getFlagCount(String title);
+  void updateFlagCount(String title);
+  void flushFlag(HashMap<String, Integer> objs);
 
   void close();
 }
