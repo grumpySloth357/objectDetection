@@ -1,5 +1,6 @@
 package main.SpeakEyE.app;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
@@ -38,19 +39,13 @@ public class DetectionActivity extends CameraActivity implements ImageReader.OnI
     private static final Logger LOGGER = new Logger();
 
     private static final int INPUT_SIZE = 300; //224
-    private static final int IMAGE_MEAN = 128;
-    private static final float IMAGE_STD = 128.0f;
+
     private static final String INPUT_NAME = "image_tensor";
     private static final String[] OUTPUT_NAMES = {"detection_boxes", "detection_scores", "detection_classes", "num_detections"};
 
     //private static final String MODEL_FILE = "file:///android_asset/ssd_inception_v2_coco.pb"; // takes 6s/image
     private static final String MODEL_FILE = "file:///android_asset/ssd_mobilenet_v1_coco.pb"; //~1-2s/image
-
     private static final String LABEL_FILE = "file:///android_asset/mscoco_labels.txt";
-    //private static final String FLAG_FILE = "file:///android_asset/flags.txt";
-
-
-    private static final float MINIMUM_CONFIDENCE_MULTIBOX = 0.1f;
 
     private static final int TF_OD_API_INPUT_SIZE = 300; //300
 
@@ -83,9 +78,6 @@ public class DetectionActivity extends CameraActivity implements ImageReader.OnI
 
     private static final boolean MAINTAIN_ASPECT = true;
 
-    //private MultiBoxTracker tracker;
-
-    private byte[] luminanceCopy;
 
     private BorderedText borderedText;
 
@@ -224,13 +216,76 @@ public class DetectionActivity extends CameraActivity implements ImageReader.OnI
                         lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
 
                         System.out.println("Detection time: "+lastProcessingTimeMs);
-//                        for (Iterator<Classifier.Recognition> i = results.iterator(); i.hasNext();) {
-//                            Classifier.Recognition item = i.next();
-//                            System.out.println(item.toString());
-//                        }
-
                         cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);
+
+                        /*Alert on certain objects*/
+                        String title;
+                        for (final Classifier.Recognition result : results){
+                            title = result.getTitle();
+                            if (detector.getFlag(title) && result.getArea()>=0.2f) {
+                                detector.updateFlagCount(title); //Update new flag counter
+                                if (detector.getFlagCount(title) ==0 ) { //1st flag => notify
+                                    Intent i = new Intent(getBaseContext(), AudioDescription.class);
+                                    String str = "Warning " + title + " detected";
+                                    i.putExtra("word", str);
+                                    startService(i);
+                                }
+                            }
+                        }
+
+                        /*Set results on a box*/
                         resultsView.setResults(results);
+
+                        /*Box around results?*/
+                        /*
+                        final Canvas canvas = new Canvas(cropCopyBitmap);
+                        System.out.println("Canvas: "+canvas.getHeight()+", "+canvas.getWidth());
+                        final Paint paint = new Paint();
+                        paint.setColor(Color.RED);
+                        paint.setStyle(Style.STROKE);
+                        paint.setStrokeWidth(2.0f);
+
+                        final List<Classifier.Recognition> mappedRecognitions =
+                                new LinkedList<Classifier.Recognition>();
+
+                        for (final Classifier.Recognition result : results) {
+                            final RectF location = result.getLocation();
+                            System.out.println("BEFORE: "+result.getTitle() + ":" + location + ", area: " + result.getArea());
+                            if (location != null){// && result.getConfidence() >= minimumConfidence) {
+                                canvas.drawRect(location, paint);
+
+                                cropToFrameTransform.mapRect(location);
+                                result.setLocation(location);
+                                mappedRecognitions.add(result);
+                            }
+                        }
+                        //Print cropped recognition
+                        for (final Classifier.Recognition result : mappedRecognitions) {
+                            final RectF location = result.getLocation();
+                            System.out.println("MAPPED: "+result.getTitle() + ":" + location + ", area: " + result.getArea());
+                        }
+
+                        //Lets try drawing things..
+                        final Paint textPaint = new Paint();
+                        textPaint.setColor(Color.WHITE);
+                        textPaint.setTextSize(60.0f);
+
+                        final Paint boxPaint = new Paint();
+                        boxPaint.setColor(Color.RED);
+                        boxPaint.setAlpha(200);
+                        boxPaint.setStyle(Style.STROKE);
+
+                        for (final Classifier.Recognition result : mappedRecognitions) {
+                            final RectF rect = result.getLocation();
+                            canvas.drawRect(rect, boxPaint);
+                            canvas.drawText("" + result.getTitle(), rect.left, rect.top, textPaint);
+                            borderedText.drawText(canvas, rect.centerX(), rect.centerY(), "" + result.getTitle());
+                        }
+                        */
+
+                        /*********************************************************/
+
+
                         requestRender();
                         computing = false;
                     }

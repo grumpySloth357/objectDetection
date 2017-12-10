@@ -188,7 +188,7 @@ public class TensorFlowImageClassifier implements Classifier {
       if (outputs[i] > THRESHOLD) {
         pq.add(
             new Recognition(
-                "" + i, labels.size() > i ? labels.get(i) : "unknown", outputs[i], null));
+                "" + i, labels.size() > i ? labels.get(i) : "unknown", outputs[i], null, 0.0f));
       }
     }
     final ArrayList<Recognition> recognitions = new ArrayList<Recognition>();
@@ -199,6 +199,11 @@ public class TensorFlowImageClassifier implements Classifier {
     Trace.endSection(); // "recognizeImage"
     return recognitions;
   }
+
+  @Override
+  public Boolean getFlag(String title) {return false;}
+  public Integer getFlagCount(String title) {return -1;}
+  public void updateFlagCount(String title) {}
 
   @Override
   public void enableStatLogging(boolean logStats) {

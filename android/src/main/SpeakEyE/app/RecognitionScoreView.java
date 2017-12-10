@@ -16,8 +16,11 @@ limitations under the License.
 package main.SpeakEyE.app;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -67,7 +70,8 @@ public class RecognitionScoreView extends View implements ResultsView {
   public void onDraw(final Canvas canvas) {
     final int x = 10;
     int y = (int) (fgPaint.getTextSize() * 1.5f);
-
+    Paint boxPaint = new Paint();
+    boxPaint.setColor(Color.BLACK);
     canvas.drawPaint(bgPaint);
 
     if (results != null) {
@@ -77,7 +81,13 @@ public class RecognitionScoreView extends View implements ResultsView {
         canvas.drawText(title + ": " + recog.getConfidence(), x, y, fgPaint);
         obj_map.add(title);
         y += fgPaint.getTextSize() * 1.5f;
+        /*Get location*/
+        RectF location = recog.getLocation();
+        System.out.println("VIEW: "+title+":"+location+ ", area: "+recog.getArea());
+        //canvas.drawRect(location,boxPaint);
       }
+
+      /*Say stuff*/
       String speak_txt = TextUtils.join(" ", obj_map);
       Output.SetAudio(speak_txt);
     }
