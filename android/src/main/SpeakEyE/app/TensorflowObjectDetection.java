@@ -43,8 +43,8 @@ public class TensorflowObjectDetection implements Classifier {
     private Vector<String> labels = new Vector<String>();
     private HashMap<Integer, String> labels_map = new HashMap<Integer, String>(100);
     private HashMap<String, Boolean> flag_map = new HashMap<String, Boolean>(100);
-    private final int COUNT_THRESHOLD = 5;
-    protected HashMap<String, Integer> flag_counter = new HashMap<String, Integer>(100);
+    private HashMap<String, Integer> flag_counter = new HashMap<String, Integer>(100);
+    private static final int COUNT_THRESHOLD = 5;
     private int[] intValues;
     private byte[] byteValues;
     private float[] outputLocations;
@@ -217,14 +217,20 @@ public class TensorflowObjectDetection implements Classifier {
 
         // Scale them back to the input size.
         //System.out.println("OutputScores.length: "+outputScores.length);
-        HashSet<String> hash_Set = new HashSet<String>(20);
+        //HashSet<String> hash_Set = new HashSet<String>(20);
+        String title;
         for (int i = 0; i < outputScores.length; ++i) {
             //System.out.println(i+": OutputClass: "+outputClasses[i]);
             //System.out.println(i+": Detected: "+labels.get((int) outputClasses[i])+"\t Confidence: "+outputScores[i]);
             //System.out.println(i+": Detected: "+labels_map.get((int) outputClasses[i])+"\t Confidence: "+outputScores[i]);
             //System.out.println("Detected <FLAG> "+ flag_map.get((int) outputClasses[i]));
             if (outputScores[i]>=0.3f) { /*Only add things if they are over 0.3 threshold*/
-                hash_Set.add(labels_map.get((int) outputClasses[i]));
+                //hash_Set.add(labels_map.get((int) outputClasses[i]));
+                title = labels_map.get((int) outputClasses[i]);
+                /*Update flag counter*/
+
+
+                /*Update location and area*/
                 final RectF detection =
                                         new RectF(
                             outputLocations[4 * i + 1] * inputSize,
@@ -234,12 +240,12 @@ public class TensorflowObjectDetection implements Classifier {
                 final float area = (detection.width()*detection.height())/(inputSize*inputSize);
                 pq.add(
                         //new Recognition("" + i, labels.get((int) outputClasses[i]), outputScores[i], detection));
-                        new Recognition("" + i, labels_map.get((int) outputClasses[i]), outputScores[i], detection, area));
+                        new Recognition("" + i, title, outputScores[i], detection, area));
             }
         }
         //Hashset into string...
-        String storageStr = TextUtils.join(" ", hash_Set);
-        System.out.println(storageStr);
+        //String storageStr = TextUtils.join(" ", hash_Set);
+        //System.out.println(storageStr);
         //Output.SetAudio(storageStr);
 
         //System.out.println("Got out of recognition loop!!");
@@ -258,16 +264,36 @@ public class TensorflowObjectDetection implements Classifier {
     }
 
     /*Get Flag count*/
+    @Override
     public Integer getFlagCount(String title) {return flag_counter.get(title);}
 
     /*Set Flag Count*/
+    @Override
     public void updateFlagCount(String title) {
         int count = this.flag_counter.get(title);
-        if (count>COUNT_THRESHOLD) { //reset counter
+        if (count> 5) { //reset counter
             this.flag_counter.put(title, 0);
         } else { //increase counter
             this.flag_counter.put(title, count+1);
         }
+    }
+
+    /*Flush Flag i.e.
+    if something that was detected in the previous cycle i.e. count>0 is not detected now then change count to zero
+    * */
+    @Override
+    public void flushFlag(final HashMap <String, Integer> objs) {
+        /*Reset all flag count to 0*/
+        for (String key: flag_counter.keySet()) {
+            flag_counter.put(key, 0);
+        }
+
+        /*Update actual Flag counts*/
+        for (HashMap.Entry<String, Integer> entry: objs.entrySet()) {
+            //System.out.println("<OBJS> "+entry.getKey()+":"+entry.getValue());
+            flag_counter.put(entry.getKey(), entry.getValue());
+        }
+
     }
 
     @Override

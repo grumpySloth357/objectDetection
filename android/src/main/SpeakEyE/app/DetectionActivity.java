@@ -15,6 +15,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.RectF;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.os.SystemClock;
@@ -214,27 +217,36 @@ public class DetectionActivity extends CameraActivity implements ImageReader.OnI
                         final long startTime = SystemClock.uptimeMillis();
                         final List<Classifier.Recognition> results = detector.recognizeImage(croppedBitmap);
                         lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
-
                         System.out.println("Detection time: "+lastProcessingTimeMs);
+                        final HashMap<String, Integer> objs = new HashMap<String, Integer>(20);
+
                         cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);
+                        /*Set results on a box*/
+                        resultsView.setResults(results);
 
                         /*Alert on certain objects*/
+
                         String title;
+                        int count;
                         for (final Classifier.Recognition result : results){
                             title = result.getTitle();
+                            //count = detector.getFlagCount(title);
                             if (detector.getFlag(title) && result.getArea()>=0.2f) {
-                                detector.updateFlagCount(title); //Update new flag counter
-                                if (detector.getFlagCount(title) ==0 ) { //1st flag => notify
+                                System.out.println("Flagged: "+title);
+                                if ( detector.getFlagCount(title) == 5 ) { //notify if threshold more than 5.. //make sure its only 5 else you'll encounter some concurrency issues
                                     Intent i = new Intent(getBaseContext(), AudioDescription.class);
                                     String str = "Warning " + title + " detected";
                                     i.putExtra("word", str);
                                     startService(i);
                                 }
+                                detector.updateFlagCount(title); //Update new flag counter
                             }
+                            objs.put(title, detector.getFlagCount(title));
+                            //System.out.println("Recognized "+title+ ", count: " + count+ ", newCount: "+detector.getFlagCount(title));
                         }
+                        //Flush counter
+                        detector.flushFlag(objs);
 
-                        /*Set results on a box*/
-                        resultsView.setResults(results);
 
                         /*Box around results?*/
                         /*

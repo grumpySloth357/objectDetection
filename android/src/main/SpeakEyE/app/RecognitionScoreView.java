@@ -83,7 +83,7 @@ public class RecognitionScoreView extends View implements ResultsView {
         y += fgPaint.getTextSize() * 1.5f;
         /*Get location*/
         RectF location = recog.getLocation();
-        System.out.println("VIEW: "+title+":"+location+ ", area: "+recog.getArea());
+        //System.out.println("VIEW: "+title+":"+location+ ", area: "+recog.getArea());
         //canvas.drawRect(location,boxPaint);
       }
 

@@ -19,6 +19,7 @@ import android.graphics.Bitmap;
 import android.graphics.RectF;
 import android.view.View;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -33,6 +34,7 @@ public interface Classifier  {
      * A unique identifier for what has been recognized. Specific to the class, not the instance of
      * the object.
      */
+    public static final int FLAG_THRESHOLD = 5;
     private final String id;
 
     /**
@@ -117,6 +119,7 @@ public interface Classifier  {
   Boolean getFlag(String title);
   Integer getFlagCount(String title);
   void updateFlagCount(String title);
+  void flushFlag(HashMap<String, Integer> objs);
 
   void close();
 }

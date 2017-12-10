@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Vector;
@@ -204,6 +205,7 @@ public class TensorFlowImageClassifier implements Classifier {
   public Boolean getFlag(String title) {return false;}
   public Integer getFlagCount(String title) {return -1;}
   public void updateFlagCount(String title) {}
+  public void flushFlag(HashMap<String, Integer> objs) {};
 
   @Override
   public void enableStatLogging(boolean logStats) {
