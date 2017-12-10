@@ -9,7 +9,8 @@ Speak EyE is an android application geared towards visually impaired individuals
 
 # Navigation Folders
 
-**SpeakEye**:     Our android application
+**android**:      Our android app, including object detection function. (And we are trying to integrate other                   functions to this app.)
+
 
 **python_test**:  Folder for python based object detection tests
 
@@ -17,7 +18,22 @@ Speak EyE is an android application geared towards visually impaired individuals
 
 **models**:       Where you should save your .pb models :)
 
+
 The models can be downloaded from: [Tensorflow](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md)
+
+# How to Run the App
+
+1. Download our repository in Githup.
+
+2. In Android Studio, click open and choose the corresponding app in the location where you download it.(like SpeakEyE or Android)
+
+3. Run it in Android Studio.(You may need to get everything updated)
+
+4. Choose the emulator and then you can see what we have done.
+
+(To run the app "Android", you need to add 3 models in "ObjectDetection-- Android-- assets". But the models are too large to upload to Git. We have uploaded them to a Google drive: https://drive.google.com/open?id=1zB53T-PWOrXztuH9_s5xrc_7Ar_kcRke
+You can download and add them to the path mentioned above. After adding you need to re-gradle the app in Android Studio.)
+
 
 # Contributors
 
