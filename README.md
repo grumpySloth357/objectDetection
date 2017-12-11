@@ -15,7 +15,9 @@ Speak EyE is an android application geared towards visually impaired individuals
 
 **cpp_test**:     Folder for C++ based object detection tests
 
-**models**:       Where you should save your .pb models :)
+**models**:       Where you should save your .pb models 
+
+**Test Result**:  Android Profiler Result, including CPU and Memory test result images and a battery test report :)
 
 
 The models can be downloaded from: [Tensorflow](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md)
