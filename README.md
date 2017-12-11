@@ -9,8 +9,7 @@ Speak EyE is an android application geared towards visually impaired individuals
 
 # Navigation Folders
 
-**android**:      Our android app, including object detection function. (And we are trying to integrate other                   functions to this app.)
-
+**android**:      Our main android app.(Object detection, Audio description, Alert system)
 
 **python_test**:  Folder for python based object detection tests
 
