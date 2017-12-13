@@ -33,7 +33,7 @@
     <application
         android:allowBackup="true"
         android:debuggable="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/see"
         android:label="@string/app_name"
         android:theme="@style/MaterialTheme"
         tools:ignore="HardcodedDebugMode">
