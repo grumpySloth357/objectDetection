@@ -9,17 +9,17 @@ Speak EyE is an android application geared towards visually impaired individuals
 
 # Navigation Folders
 
-**android**:      Our android app, including object detection function. (And we are trying to integrate other                   functions to this app.)
-
+**android**:      Our main android app.(Object detection, Audio description, Alert system)
 
 **python_test**:  Folder for python based object detection tests
 
 **cpp_test**:     Folder for C++ based object detection tests
 
-**models**:       Where you should save your .pb models :)
-
+**models**:       Where you should save your .pb models 
 
 The models can be downloaded from: [Tensorflow](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/detection_model_zoo.md)
+
+**Test Result**:  Android Profiler Result, including CPU and Memory test result images and a battery test report :)
 
 # How to Run the App
 
