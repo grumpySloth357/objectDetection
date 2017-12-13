@@ -31,7 +31,7 @@ The models can be downloaded from: [Tensorflow](https://github.com/tensorflow/mo
 
 4. Choose the emulator and then you can see what we have done.
 
-(To run the app "Android", you need to add 3 models in "ObjectDetection-- Android-- assets". But the models are too large to upload to Git. We have uploaded them to a Google drive: https://drive.google.com/open?id=1zB53T-PWOrXztuH9_s5xrc_7Ar_kcRke
+(To run the app "Android", you need to add the model **ssd_mobilenet_v1_coco.pb** in "ObjectDetection-- Android-- assets". But the models are too large to upload to Git. We have uploaded them to a Google drive: https://drive.google.com/open?id=1zB53T-PWOrXztuH9_s5xrc_7Ar_kcRke
 You can download and add them to the path mentioned above. After adding you need to re-gradle the app in Android Studio.)
 
 
