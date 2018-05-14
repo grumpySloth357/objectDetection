@@ -39,7 +39,7 @@ You can download and add them to the path mentioned above. After adding you need
 
 Jiali Ge        :[@ivyoo00](https://github.com/ivyoo00)
 
-Nidhi Tiwari    :[@nidhi-bu](https://github.com/nidhi-bu)
+Nidhi Tiwari    :[@nidtiw](https://github.com/nidtiw)
 
 Shreeya Khadka  :[@angrySloth357](https://github.com/angrySloth357)
 
